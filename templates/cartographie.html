@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+  <div class="row check_carto">
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="upngSwitch" onchange="toggleUNPG(this)" checked>
+      <label class="custom-control-label" for="upngSwitch">UNPG</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="mifSwitch" onchange="toggleMIF(this)" checked>
+      <label class="custom-control-label" for="mifSwitch">MI-F</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="sficSwitch" onchange="toggleSFIC(this)" checked>
+      <label class="custom-control-label" for="sficSwitch">SFIC</label>
+    </div>
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="rnfSwitch" onchange="toggleRNF(this)" checked>
+      <label class="custom-control-label" for="rnfSwitch">RNF</label>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<div id="map" style="height: 600px; width: 100%">
+</div>
+
+
+<script>
+  var map = L.map('map').setView([47, 2.5], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var mifIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_mif.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var unpgIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_unpg.png')}}",
+    iconSize: [23, 21],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var rnfIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_rnf.png')}}",
+    iconSize: [20, 23],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var sficIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_sfic.png')}}",
+    iconSize: [20, 18],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var mif = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "MI-F" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var unpg = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "UNPG" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var sfic = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "SFIC" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var rnf = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "RNF" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var rnfLayer = L.layerGroup([]);
+  var mifLayer = L.layerGroup([]);
+  var unpgLayer = L.layerGroup([]);
+  var sficLayer = L.layerGroup([]);
+
+
+  function makePointLayer(point, icon, layer){
+    marker = L.marker([point.LAT, point.LNG], {icon: icon})
+    .bindPopup("<div style=\"text-align: center;\"><b>" +point.SURNAME+" "+point.NAME+"</b><br><br> "+ point.FONCTION +" chez <br>" + point.STRUCTURE+ "<br><a href=\'{{ url_for('fiche', id= '') }}" +point.ID+"\'>Plus d'informations</a></div>");
+    layer.addLayer(marker);
+  }
+
+  rnf.forEach(element => { makePointLayer(element, rnfIcon, rnfLayer)})
+  mif.forEach(element => { makePointLayer(element, mifIcon, mifLayer)})
+  unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
+  sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+
+  rnfLayer.addTo(map);
+  mifLayer.addTo(map);
+  unpgLayer.addTo(map);
+  sficLayer.addTo(map);
+
+  function toggleUNPG (e) {
+    if (e.checked) {
+      map.addLayer(unpgLayer);
+    } else {
+      map.removeLayer(unpgLayer);
+    }
+  }
+
+  function toggleMIF (e) {
+    if (e.checked) {
+      map.addLayer(mifLayer);
+    } else {
+      map.removeLayer(mifLayer);
+    }
+  }
+
+  function toggleSFIC (e) {
+    if (e.checked) {
+      map.addLayer(sficLayer);
+    } else {
+      map.removeLayer(sficLayer);
+    }
+  }
+
+  function toggleRNF (e) {
+    if (e.checked) {
+      map.addLayer(rnfLayer);
+    } else {
+      map.removeLayer(rnfLayer);
+    }
+  }
+
+
+</script>
+
+{% endblock content %}

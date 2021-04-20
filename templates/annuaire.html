@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+  {% endif %}
+  {% endwith %}
+  <h4>Annuaire de géologie</h4>
+  <table
+  data-toggle="table"
+  data-search="true"
+  data-pagination="true"
+  data-height="600"
+  data-sortable="true"
+  data-show-columns="true"
+  data-show-export="true">
+    <thead>
+      <tr>
+        <th data-sortable="true" data-field="nom">Nom</th>
+        <th data-sortable="true" data-field="prenom">Prénom</th>
+        <th data-sortable="true" data-field="structure">Structure</th>
+        <th data-sortable="true" data-field="fonction">Fonction</th>
+        <th data-sortable="true" data-field="reseau" data-visible=false>Réseau</th>
+        <th data-sortable="true" data-field="expertises">Expertises</th>
+        <th data-sortable="true" data-field="sites">Sites</th>
+        <th data-sortable="true" data-field="region" data-visible=false>Région</th>
+        <th data-sortable="true" data-field="departement" data-visible=false>Département</th>
+        <th data-sortable="true" data-field="numvoie" data-visible=false>N°, voie</th>
+        <th data-sortable="true" data-field="code_postal" data-visible=false>Code postal</th>
+        <th data-sortable="true" data-field="ville" data-visible=false>Ville</th>
+        <th data-sortable="true" data-field="Coordonnées" data-visible=false>Coordonnées</th>
+        <th data-sortable="true" data-field="email" data-visible=false>Email</th>
+        <th data-sortable="true" data-field="fixe" data-visible=false>Téléphone fixe</th>
+        <th data-sortable="true" data-field="mobile" data-visible=false>Téléphone mobile</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for personne in annuaire  %}
+      <tr>
+        <td><a href="{{ url_for('fiche', id=personne.id) }}">{{ personne.nom }}</a></td>
+        <td><a href="{{ url_for('fiche', id=personne.id) }}">{{ personne.prenom }}</a></td>
+        <td>{{ personne.structure }}</td>
+        <td>{{ personne.fonction }}</td>
+        <td>{{ personne.reseau }}</td>
+        <td>{% for i in personne.expertises %}
+        {{ i.nom }}{% if not loop.last %}, {% endif %}
+        {% endfor %}</td>
+        <td>{% for i in personne.sites %}
+        {{ i.nom }}{% if not loop.last %}, {% endif %}
+        {% endfor %}</td>
+        <td>{{ personne.region }}</td>
+        <td>{{ personne.departement }}</td>
+        <td>{{ personne.adresse }}</td>
+        <td>{{ personne.code_postal }}</td>
+        <td>{{ personne.commune }}</td>
+        <td>{{ personne.lat }} ; {{ personne.long }}</td>
+        <td>{{ personne.email }}</td>
+        <td>{{ personne.telephone_fixe }}</td>
+        <td>{{ personne.telephone_port }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('ajout')}}" role="button">Ajouter un contact</a><a class="btn btn-primary btn-lg" href="{{ url_for('cartographie')}}" role="button">Cartographie détaillée</a></div>
+  <br>
+</div>
+</main>
+{% endblock content %}

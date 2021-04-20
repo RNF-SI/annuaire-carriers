@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+</div>
+<br>
+<div class="container">
+  <div class="">
+    <p style="text-align:justify;">Depuis 2019, l’UNPG, MI-F, le SFIC et RNF sont engagés dans un partenariat construit autour des liens qui unissent l’univers des carrières, en activité ou après exploitation, et le patrimoine naturel. Plus particulièrement, les carrières présentent un intérêt évident pour les géologues, qui y trouvent de magnifiques affleurements frais et un grand nombre de sites du patrimoine géologique français sont associés à des fronts de taille.
+<br><br>C’est dans ce contexte que les 4 réseaux partenaires ont souhaité mettre en place un annuaire commun dans lequel leurs membres pourront rechercher ponctuellement des interlocuteurs autour d’eux en cas de besoin. </p>
+  </div>
+  <br>
+  <hr style="height: 3px; color: #839D2D; width: 50%;">
+  <div class="partenaires">
+    <div class="">
+      <img src="{{ url_for('static', filename='img/logo_unpg.png')}}" alt="">
+    </div>
+    <div class="">
+      <img src="{{ url_for('static', filename='img/logo_mif.png')}}" alt="">
+    </div>
+    <div class="">
+      <img src="{{ url_for('static', filename='img/logo_sfic.png')}}" alt="">
+    </div>
+    <div class="">
+      <img src="{{ url_for('static', filename='img/logo_rnf_vert.png')}}" alt="">
+    </div>
+  </div>
+  <hr style="height: 3px; color: #839D2D; width: 50%;">
+  <br>
+  <div class="boutons_index"><a class="btn btn-primary btn-lg" href="{{ url_for('annuaire')}}" role="button">Accéder à l'annuaire</a><a class="btn btn-primary btn-lg" href="{{ url_for('ajout')}}" role="button">Ajouter un contact</a><a class="btn btn-primary btn-lg" href="{{ url_for('cartographie')}}" role="button">Cartographie détaillée</a></div>
+  <br>
+<div id="map" style="height: 600px; width: 100%">
+  </div>
+</div>
+<br>
+
+<script>
+
+  var map = L.map('map').setView([47, 2.5], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var mifIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_mif.png')}}",
+    iconSize: [20, 20],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var unpgIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_unpg.png')}}",
+    iconSize: [23, 21],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var rnfIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_rnf.png')}}",
+    iconSize: [20, 23],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var sficIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_sfic.png')}}",
+    iconSize: [20, 18],
+    iconAnchor: [10, 11],
+    popupAnchor: [1, -11]
+  });
+
+  var mif = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "MI-F" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var unpg = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "UNPG" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var sfic = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "SFIC" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var rnf = [
+  {% for contact in contacts %}
+  {% if contact.reseau == "RNF" %}
+  {
+    "LNG": "{{ contact.long }}",
+    "LAT": "{{ contact.lat }}",
+    "SURNAME": "{{ contact.prenom }}",
+    "NAME": "{{ contact.nom }}",
+    "FONCTION": "{{ contact.fonction }}",
+    "STRUCTURE": "{{ contact.structure }}",
+    "ID" : "{{ contact.id }}"
+  },
+  {% endif %}
+  {% endfor %}
+  ];
+
+  var rnfLayer = L.layerGroup([]);
+  var mifLayer = L.layerGroup([]);
+  var unpgLayer = L.layerGroup([]);
+  var sficLayer = L.layerGroup([]);
+
+
+  function makePointLayer(point, icon, layer){
+    marker = L.marker([point.LAT, point.LNG], {icon: icon})
+    .bindPopup("<div style=\"text-align: center;\"><b>" +point.SURNAME+" "+point.NAME+"</b><br><br> "+ point.FONCTION +" chez <br>" + point.STRUCTURE+ "<br><a href=\'{{ url_for('fiche', id= '') }}" +point.ID+"\'>Plus d'informations</a></div>");
+    layer.addLayer(marker);
+  }
+
+  rnf.forEach(element => { makePointLayer(element, rnfIcon, rnfLayer)})
+  mif.forEach(element => { makePointLayer(element, mifIcon, mifLayer)})
+  unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
+  sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+
+  rnfLayer.addTo(map);
+  mifLayer.addTo(map);
+  unpgLayer.addTo(map);
+  sficLayer.addTo(map);
+
+</script>
+
+{% endblock content %}

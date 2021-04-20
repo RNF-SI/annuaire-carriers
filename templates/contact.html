@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="jumbotron bg-dark text-white">
+  <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="row identite">
+      <div class="col col-md-1">
+      </div>
+      <div class="col col-md-2">
+        <img src="{{ url_for('static', filename='img/corentin.jpg')}}" width=100% alt="">
+      </div>
+      <div class="col col-md-3 vertical-center">
+        <div class="">
+          <h3>Corentin Guinault</h3>
+          <h4>Chargé de projet géodiversité</h4>
+          <h6>Réserves Naturelles de France</h6>
+        </div>
+      </div>
+      <div class="col col-md-2">
+        <img src="{{ url_for('static', filename='img/zacharie_moulin.jpg')}}" width=100% alt="">
+      </div>
+      <div class="col col-md-3 vertical-center">
+        <div class="">
+          <h3>Zacharie Moulin</h3>
+          <h4>Chargé de mission géomaticien</h4>
+          <h6>Réserves Naturelles de France</h6>
+        </div>
+      </div>
+      <div class="col col-md-1">
+      </div>
+    </div>
+    <br>
+
+
+
+    <h2>Contacter un administrateur</h2>
+    <hr>
+    <form action="{{ url_for('contact') }}" , method="POST">
+    <div class="row">
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input type="text" class="form-control" name="nom" placeholder="Nom" autocomplete=family-name required>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=given-name>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-md-12">
+        <div class="form-group">
+          <label for="sujet">Sujet</label>
+          <select class="custom-select" name="sujet">
+            <option selected disabled>Quel est votre sujet ?</option>
+            <option>Question technique sur le site</option>
+            <option>Question sur le partenariat</option>
+            <option>Autre question</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col col-md-12">
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea type="text" class="form-control" name="message" placeholder="Entrez votre message..." autocomplete=given-name required></textarea>
+      </div>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col col-md-1">
+      </div>
+      <div class="col col-md-2 text-center">
+        <button type="button" class="btn btn-danger btn-block" onclick="window.location.href='{{ url_for('index')}}'"><i class="fas fa-times"></i> Annuler</button>
+      </div>
+      <div class="col col-md-6">
+      </div>
+      <div class="col col-md-2 text-center">
+        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Envoyer</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}

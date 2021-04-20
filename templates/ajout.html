@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style media="screen">
+  .boutonrond {border-radius: 20%;}
+</style>
+
+<div class="jumbotron bg-dark text-white">
+  <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h2 style="color: orange;">Ajouter un nouveau contact</h2>
+    <p>Entrez les coordonnées professionnelles de ce contact</p>
+    <hr>
+    <form action="{{ url_for('ajout') }}" , method="POST">
+
+      <div class="row">
+        <div class="col col-md-6" id="adresse_total">
+          <div class="row">
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" name="nom" placeholder="Nom" autocomplete=family-name required>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" class="form-control" name="prenom" placeholder="Prénom" autocomplete=given-name required>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col col-md-12">
+          <div class="form-group">
+            <label for="structure">Structure</label>
+            <input type="text" class="form-control" name="structure" placeholder="Structure" autocomplete=organization required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label for="fonction">Fonction</label>
+          <input type="text" class="form-control" name="fonction" placeholder="Fonction" autocomplete=organization-title required>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-group">
+          <label for="reseau">Réseau</label>
+          <select class="custom-select" name="reseau" required>
+            <option selected disabled>Choisissez un réseau</option>
+            <option>RNF</option>
+            <option>UNPG</option>
+            <option>MI-F</option>
+            <option>SFIC</option>
+          </select>
+        </div>
+      </div>
+      </div>
+      </div>
+      <div class="col col-md-6" id="adresse_total">
+        <div class="col-lg-12">
+          <label for="type_site">Champs d'expertise du contact <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Indiquez une par une l'ensemble des expertises du contact. Vous pouvez en mettre le nombre que vous le souhaitez."></i></label>
+          <div id="inputExpertise">
+            <div class="input-group mb-3">
+              <input type="text" name="expertise[]" class="form-control m-input" placeholder="Intitulé de l'expertise" autocomplete="off">
+              <div class="input-group-append">
+                <button id="removeExpertise" type="button" class="btn btn-danger">Supprimer</button>
+              </div>
+            </div>
+          </div>
+          <div id="inputExpertise">
+            <div class="input-group mb-3">
+              <input type="text" name="expertise[]" class="form-control m-input" placeholder="Intitulé de l'expertise" autocomplete="off">
+              <div class="input-group-append">
+                <button id="removeExpertise" type="button" class="btn btn-danger">Supprimer</button>
+              </div>
+            </div>
+          </div>
+          <div id="inputExpertise">
+            <div class="input-group mb-3">
+              <input type="text" name="expertise[]" class="form-control m-input" placeholder="Intitulé de l'expertise" autocomplete="off">
+              <div class="input-group-append">
+                <button id="removeExpertise" type="button" class="btn btn-danger">Supprimer</button>
+              </div>
+            </div>
+          </div>
+          <div id="newExpertise" style="text-align: right;"></div>
+          <button id="addExpertise" type="button" class="btn btn-info">Ajouter une expertise</button>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label for="region">Région</label>
+            <select class="custom-select" name="region">
+              <option selected disabled>Choisissez une région</option>
+              <option>Auvergne-Rhône-Alpes</option>
+              <option>Bourgogne-Franche-Comté</option>
+              <option>Bretagne</option>
+              <option>Centre-Val de Loire</option>
+              <option>Corse</option>
+              <option>Grand Est</option>
+              <option>Hauts-de-France</option>
+              <option>Île-de-France</option>
+              <option>Normandie</option>
+              <option>Nouvelle-Aquitaine</option>
+              <option>Occitanie</option>
+              <option>Pays de la Loire</option>
+              <option>Provence-Alpes-Côte d'Azur</option>
+            </select>
+          </div>
+        </div>
+        <div class="col col-md-6">
+          <div class="form-group">
+            <label for="departement">Département</label>
+            <select class="custom-select" name="departement">
+              <option selected disabled>Choisissez un département</option>
+              <option>01 - Ain</option>
+              <option>02 - Aisne</option>
+              <option>03 - Allier</option>
+              <option>04 - Alpes-de-Haute-Provence</option>
+              <option>05 - Hautes-Alpes</option>
+              <option>06 - Alpes-Maritimes</option>
+              <option>07 - Ardèche</option>
+              <option>08 - Ardennes</option>
+              <option>09 - Ariège</option>
+              <option>10 - Aube</option>
+              <option>11 - Aude</option>
+              <option>12 - Aveyron</option>
+              <option>13 - Bouches-du-Rhône</option>
+              <option>14 - Calvados</option>
+              <option>15 - Cantal</option>
+              <option>16 - Charente</option>
+              <option>17 - Charente-Maritime</option>
+              <option>18 - Cher</option>
+              <option>19 - Corrèze</option>
+              <option>2A - Corse-du-Sud</option>
+              <option>2B - Haute-Corse</option>
+              <option>21 - Côte-d'Or</option>
+              <option>22 - Côtes d'Armor</option>
+              <option>23 - Creuse</option>
+              <option>24 - Dordogne</option>
+              <option>25 - Doubs</option>
+              <option>26 - Drôme</option>
+              <option>27 - Eure</option>
+              <option>28 - Eure-et-Loir</option>
+              <option>29 - Finistère</option>
+              <option>30 - Gars</option>
+              <option>31 - Haute-Garonne</option>
+              <option>32 - Gers</option>
+              <option>33 - Gironde</option>
+              <option>34 - Hérault</option>
+              <option>35 - Ille-et-Vilaine</option>
+              <option>36 - Indre</option>
+              <option>37 - Indre-et-Loire</option>
+              <option>38 - Isère</option>
+              <option>39 - Jura</option>
+              <option>40 - Landes</option>
+              <option>41 - Loir-et-Cher</option>
+              <option>42 - Loire</option>
+              <option>43 - Haute-Loire</option>
+              <option>44 - Loire-Atlantique</option>
+              <option>45 - Loiret</option>
+              <option>46 - Lot</option>
+              <option>47 - Lot-et-Garonne</option>
+              <option>48 - Lozère</option>
+              <option>49 - Maine-et-Loire</option>
+              <option>50 - Manche</option>
+              <option>51 - Marne</option>
+              <option>52 - Haute-Marne</option>
+              <option>53 - Mayenne</option>
+              <option>54 - Meurthe-et-Moselle</option>
+              <option>55 - Meuse</option>
+              <option>56 - Morbihan</option>
+              <option>57 - Moselle</option>
+              <option>58 - Nièvre</option>
+              <option>59 - Nord</option>
+              <option>60 - Oise</option>
+              <option>61 - Orne</option>
+              <option>62 - Pas-de-Calais</option>
+              <option>63 - Puy-de-Dôme</option>
+              <option>64 - Pyrénées-Atlantiques</option>
+              <option>65 - Hautes-Pyrénées</option>
+              <option>66 - Pyrénées-Orientales</option>
+              <option>67 - Bas-Rhin</option>
+              <option>68 - Haut-Rhin</option>
+              <option>69 - Rhône</option>
+              <option>70 - Haute-Saône</option>
+              <option>71 - Saône-et-Loire</option>
+              <option>72 - Sarthe</option>
+              <option>73 - Savoie</option>
+              <option>74 - Haute-Savoie</option>
+              <option>75 - Paris</option>
+              <option>76 - Seine-Maritime</option>
+              <option>77 - Seine-et-Marne</option>
+              <option>78 - Yvelines</option>
+              <option>79 - Deux-Sèvres</option>
+              <option>80 - Somme</option>
+              <option>81 - Tarn</option>
+              <option>82 - Tarn-et-Garonne</option>
+              <option>83 - Var</option>
+              <option>84 - Vaucluse</option>
+              <option>85 - Vandée</option>
+              <option>86 - Vienne</option>
+              <option>87 - Haute-Vienne</option>
+              <option>88 - Vosges</option>
+              <option>89 - Yonne</option>
+              <option>90 - Territoire de Belfort</option>
+              <option>91 - Essonne</option>
+              <option>92 - Hauts-de-Seine</option>
+              <option>93 - Seine-St-Denis</option>
+              <option>94 - Val-de-Marne</option>
+              <option>95 - Val-D'Oise</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col col-md-6" id="adresse_total">
+          <div class="row">
+            <div class="col col-md-12">
+              <div class="form-group">
+                <label for="adresse">N°, voie</label>
+                <input type="text" class="form-control" name="adresse" placeholder="N°, voie" autocomplete=street-address>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-md-4">
+              <div class="form-group">
+                <label for="code_postal">Code Postal</label>
+                <input type="text" class="form-control" name="code_postal" placeholder="Code Postal" maxlength="5" autocomplete=postal-code>
+              </div>
+            </div>
+            <div class="col col-md-8">
+              <div class="form-group">
+                <label for="commune">Ville</label>
+                <input type="text" class="form-control" name="commune" placeholder="Ville" autocomplete=address-level2>
+              </div>
+            </div>
+          </div>
+          <p><i>Zoomez et cliquez sur la carte pour indiquer l'emplacement du contact</i> <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Indiquez l'emplacement de référence du contact. Celui-ci sera affiché sur la carte globale."></i></p>
+          <div class="row">
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label for="lat">Latitude</label>
+                <input type="text" class="form-control readonly" id="lat" name="lat" placeholder="Cliquez sur la carte" required>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="form-group">
+                <label for="long">Longitude</label>
+                <input type="text" class="form-control readonly" id="long" name="long" placeholder="Cliquez sur la carte" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-6" id="adresse_total">
+          <div id="map" style="height: 100%; width: 100%">
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col col-md-4">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email>
+          </div>
+        </div>
+        <div class="col col-md-4">
+          <div class="form-group">
+            <label for="telephone_fixe">Téléphone fixe</label>
+            <input type="text" class="form-control" name="telephone_fixe" placeholder="Téléphone fixe" maxlength="10" autocomplete=tel-national>
+          </div>
+        </div>
+        <div class="col col-md-4">
+          <div class="form-group">
+            <label for="telephone_port">Téléphone portable</label>
+            <input type="text" class="form-control" name="telephone_port" placeholder="Téléphone portable" maxlength="10" autocomplete=tel-national>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-lg-12">
+          <label for="type_site">Sites sur lesquels le contact opère <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Indiquez un par un l'ensemble des sites et leur type associé sur lesquels le contact opère."></i></label>
+          <div id="inputFormRow">
+            <div class="input-group mb-3">
+              <input type="text" name="nom_site[]" class="form-control m-input" placeholder="Nom du site" autocomplete="off">
+              <select class="custom-select" name="type_site[]">
+                <option selected disabled>Type de site</option>
+                <option>Carrière en activité</option>
+                <option>Usine</option>
+                <option>Réserve Naturelle</option>
+                <option>Autre</option>
+              </select>
+              <input type="text" name="adresse_site[]" class="form-control m-input" placeholder="Adresse du site" autocomplete="off">
+              <div class="input-group-append">
+                <button id="removeRow" type="button" class="btn btn-danger">Supprimer</button>
+              </div>
+            </div>
+          </div>
+          <div id="newRow"></div>
+          <button id="addRow" type="button" class="btn btn-info">Ajouter un site</button>
+        </div>
+      </div>
+      <hr>
+      <div class="col-auto my-1">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" id="exactitude" required>
+          <label class="custom-control-label" for="exactitude">Je certifie l'exactitude des informations fournies ci-dessus</label>
+        </div>
+      </div>
+      <div class="col-auto my-1">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input type="checkbox" class="custom-control-input" id="publication" required>
+          <label class="custom-control-label" for="publication">J'accepte que les informations transmises soient publiées sur ce site et certifie avoir l'autorisation de les publier</label>
+        </div>
+      </div>
+      <hr>
+      <p style="text-align: right;"><i>Les informations envoyées par ce formulaires seront validées par un modérateur avant publication</i></p>
+      <div class="row">
+        <div class="col col-md-1">
+        </div>
+        <div class="col col-md-2 text-center">
+          <button type="button" class="btn btn-danger btn-block" onclick="window.location.href='{{ url_for('index')}}'"><i class="fas fa-times"></i> Annuler</button>
+        </div>
+        <div class="col col-md-6">
+        </div>
+        <div class="col col-md-2 text-center">
+          <button type="submit" class="btn btn-success btn-block"><i class="fas fa-check"></i> Envoyer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
+  var map = L.map('map').setView([47, 2.5], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var theMarker = {};
+
+  map.on('click', function(e) {
+    console.log(theMarker);
+    if (theMarker != undefined) {
+      map.removeLayer(theMarker);
+    };
+    document.getElementById("lat").value = e.latlng.lat;
+    document.getElementById("long").value = e.latlng.lng;
+    theMarker = L.marker([e.latlng.lat,e.latlng.lng]).addTo(map);
+    console.log(theMarker);
+  });
+
+  // add row
+  $("#addRow").click(function () {
+    var html = '';
+    html += '<div id="inputFormRow">';
+    html += '<div class="input-group mb-3">';
+    html += '<input type="text" name="nom_site[]" class="form-control m-input" placeholder="Nom du site" autocomplete="off">';
+    html += '<select class="custom-select" name="type_site[]">';
+    html += '  <option selected disabled>Type de site</option>';
+    html += '  <option>Carrière en activité</option>';
+    html += '  <option>Usine</option>';
+    html += '  <option>Réserve Naturelle</option>';
+    html += '  <option>Autre</option>';
+    html += '</select>';
+    html += '<input type="text" name="adresse_site[]" class="form-control m-input" placeholder="Adresse du site" autocomplete="off">';
+    html += '<div class="input-group-append">';
+    html += '<button id="removeRow" type="button" class="btn btn-danger">Supprimer</button>';
+    html += '</div>';
+    html += '</div>';
+
+    $('#newRow').append(html);
+  });
+
+  // remove row
+  $(document).on('click', '#removeRow', function () {
+    $(this).closest('#inputFormRow').remove();
+  });
+
+  // add expertise
+  $("#addExpertise").click(function() {
+    var html = '';
+    html += '<div id="inputExpertise">'
+    html += '<div class="input-group mb-3">'
+    html += '<input type="text" name="expertise[]" class="form-control m-input" placeholder="Intitulé de l\'expertise" autocomplete="off">'
+    html += '<div class="input-group-append">'
+    html += '<button id="removeExpertise" type="button" class="btn btn-danger">Supprimer</button>'
+    html += '</div>'
+    html += '</div>'
+    html += '</div>'
+
+    $('#newExpertise').append(html)
+  })
+
+  // remove expertise
+  $(document).on('click', '#removeExpertise', function () {
+    $(this).closest('#inputExpertise').remove();
+  });
+
+  $(".readonly").on('keydown paste', function(e){
+      e.preventDefault();
+  });
+
+      </script>
+      {% endblock content %}

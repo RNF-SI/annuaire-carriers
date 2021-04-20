@@ -1,0 +1,235 @@
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}"> -->
+  <title>Annuaire géologie</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+  <link href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/monapp.css')}}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+  <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js" integrity="sha512-fx3aztaUjb4NyoD+Tso5g7R1l29bU3jnnTfNRKBiY9fdQOHzVhKJ10wEAgQ1zM/WXCzB9bnVryHD1M40775Tsw==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+  <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+  <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+  <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/locale/bootstrap-table-fr-FR.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/map.js')}}"></script>
+
+</head>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand titre" href="{{ url_for('index')}}"> Annuaire partagé UNPG - MI-F - SFIC - RNF  <i class="far fa-address-book"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('index')}}">Accueil <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('cartographie')}}">Cartographie détaillée <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('annuaire')}}">Table des contacts <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('contact')}}">Contact <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div style='height : 100px'>
+</div>
+<body>
+  {% block content %}
+
+  {% endblock content %}
+</body>
+
+<footer class="container">
+  <hr>
+  <div class="footer_partenaires">
+    <div class="">
+      <a href="https://www.unpg.fr/" target="_blank"><img src="{{ url_for('static', filename='img/logo_unpg.png')}}" alt=""></a>
+    </div>
+    <div class="">
+      <a href="https://www.mi-france.fr/" target="_blank"><img src="{{ url_for('static', filename='img/logo_mif.png')}}" alt="" ></a>
+    </div>
+    <div class="">
+      <img src="{{ url_for('static', filename='img/logo_sfic.png')}}" alt="">
+    </div>
+    <div class="">
+      <a href="https://reserves-naturelles.org/" target="_blank"><img src="{{ url_for('static', filename='img/logo_rnf_vert.png')}}" alt="" ></a>
+    </div>
+    <div class="mentions_legales" style="text-align:center;">
+      <a data-toggle="modal" data-target="#mentionsLegalesModal" href="#mentionsLegalesModal">Mentions légales</a>
+    </div>
+  </div>
+  <br>
+
+  <div class="modal fade" id="mentionsLegalesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Mentions légales</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>
+              Vous êtes sur l'annuaire partagé UNPG - MI-F - SFIC - RNF, édité par Réserves naturelles de France (RNF), association loi 1901.
+            </p>
+            <p>
+              Adresse : 2 allée Pierre Lacroute 21000 Dijon
+
+            </p>
+            <h3>Responsable de publication</h3>
+            <p>
+              Directeur de la publication, responsable légal : Marie Thomas, directrice.<br>
+              Ce site a pour objectif de regrouper les informations de contacts des différents acteurs des 4 réseaux partenaires.
+            </p>
+            <h3>Réalisation du site Internet</h3>
+            <p>
+              Le contenu éditiorial est réalisés par les membres et l'équipe de Réserves naturelles de France.<br>
+            </p>
+            <h3>Serveurs et hébergements</h3>
+            <p>
+              Société OVH, RCS Roubaix-Tourcoing B 424 761 419<br>
+              2, rue Kellerman, 59100 Roubaix
+            </p>
+            <h3>Traitement et protection des données</h3>
+            <p>
+              - Les données personnelles recueillies sur le site résultent de la communication volontaire d'une adresse de courrier électronique lors de l'envoi d'un formulaire. Les adresses électroniques ainsi recueillies ne servent qu'à transmettre les éléments d'information demandés.<br>
+              - Les adresses électroniques collectées ne feront l'objet d'aucune cession à des tiers. Le Parc national des Écrins n'utilise pas de procédés de collecte automatisée de données (cookies, applet java ou active X).<br>
+              - La loi "Informatique et Libertés" du 6 janvier 1978 modifiée par la loi du 6 août 2004 encadre la mise en oeuvre des fichiers ou des traitements de données à caractère personnel qu'ils soient automatisés ou manuels.<br>
+              Vous disposez d'un droit d'accès, de modification, de rectification et de suppression des données qui vous concernent (art. 34 de la loi "Informatique et Libertés").<br>
+              Vous pouvez l'exercer par courriel en le précisant lors de votre demande.
+            </p>
+            <h3>Établissements de liens</h3>
+            <p>
+              - Lien depuis des sites tiers vers ce site : RNF autorise la mise en place d'un lien hypertexte depuis n'importe quel site Internet (sous réserve d'une information préalable), à l'exclusion de ceux diffusant des informations à caractère polémique, pornographique, xénophobe ou pouvant, dans une plus large mesure porter atteinte à la sensibilité du plus grand nombre. Le site doit apparaître dans une nouvelle fenêtre. Les pages du site ne doivent en aucun cas être intégrées à l'intérieur des pages d'un autre site (Frame ou iframe). Dans tous les cas, le Parc national des Écrins se réserve le droit de demander la suppression d'un lien si il estime que le référent (site source) ne respecte pas les règles ainsi définies.
+            </p>
+            <p>
+              - Lien depuis ce site vers des sites tiers : RNF se réserve le droit de "pointer" vers des sites tiers. Accéder à ces liens ne vous fait pas quitter le site du Parc national des Écrins. Les sites cibles ne sont pas sous le contrôle du Parc national des Écrins, par conséquent celui-ci n'est pas responsable du contenu de ces sites, des liens qu'ils contiennent, ni des changements ou mises à jour qui leur sont apportés.
+            </p>
+            <h3>Diffusion des données</h3>
+            <p>
+              Les informations présentées dans l'Atlas du de la biodiversité sont des documents administratifs régis par le Code des relations entre le public et l'administration :
+            </p>
+            <p>
+              <b>1. Modalités de diffusion</b>
+            </p>
+            <p>
+              Article L300- 1&nbsp;:<br>
+              «&nbsp;Le droit de toute personne à l'information est précisé et garanti par les dispositions des titres Ier, III et IV du présent livre en ce
+              qui concerne la liberté d'accès aux documents administratifs.&nbsp;»
+            </p>
+            <p>
+              Article L300-2&nbsp;:<br>
+              «&nbsp;Sont considérés comme documents administratifs, au sens des titres Ier, III et IV du présent livre,
+              quels que soient leur date, leur lieu de conservation, leur forme et leur support, les documents produits ou reçus,
+              dans le cadre de leur mission de service public, par l'Etat, les collectivités territoriales ainsi que par les autres personnes
+              de droit public ou les personnes de droit privé chargées d'une telle mission (...)&nbsp;»
+            </p>
+            <p>
+              Article L300-4&nbsp;:<br>
+              Toute mise à disposition effectuée sous forme électronique en application du présent
+              livre se fait dans un standard ouvert, aisément réutilisable et exploitable par un système de traitement automatisé.
+            </p>
+            <p>
+              Article L312-1-1&nbsp;:<br>
+              «&nbsp;Sous réserve des articles L. 311-5 et L. 311-6 et lorsque ces documents sont disponibles
+              sous forme électronique, les administrations (...) publient en ligne les documents administratifs suivants :
+              <br>
+              (...)<br>
+              3° Les bases de données, mises à jour de façon régulière, qu'elles produisent ou qu'elles
+              reçoivent et qui ne font pas l'objet d'une diffusion publique par ailleurs ;
+              <br>
+              (...)
+            </p>
+            <p>
+
+            </p><p>
+              <b>4. Sanctions</b>
+            </p>
+            <p>
+              Article L326-1&nbsp;:<br>
+              «&nbsp;Toute personne réutilisant des informations publiques en violation des prescriptions mentionnées aux deuxième et
+              troisième alinéas du présent article est passible d'une amende prononcée par la commission mentionnée au titre IV.
+              <br>
+              Le montant maximum de l'amende est égal à celui prévu par l'article 131-13 du code pénal pour les contraventions de 5e
+              classe lorsque des informations publiques ont été réutilisées à des fins non commerciales en méconnaissance des dispositions de l'article L. 322-1 ou des conditions de réutilisation prévues par une licence délivrée à cet effet ou en violation de l'obligation d'obtenir une licence.
+              <br>
+              Lorsque des informations publiques ont été réutilisées à des fins commerciales en méconnaissance des dispositions de l'article L. 322-1 ou des conditions de réutilisation prévues par une licence délivrée à cet effet ou en violation de l'obligation d'obtenir une licence, le montant de l'amende est proportionné à la gravité du manquement commis et aux avantages tirés de ce manquement.
+              <br>
+              Pour l'application du troisième alinéa, le montant de l'amende prononcée pour sanctionner un premier manquement ne peut excéder un million d'euros. En cas de manquement réitéré dans les cinq années à compter de la date à laquelle la sanction précédemment prononcée est devenue définitive, il ne peut excéder deux millions d'euros ou, s'agissant d'une entreprise, 5 % du chiffre d'affaires hors taxes du dernier exercice clos dans la limite de deux millions d'euros.
+              <br>
+              La commission mentionnée au titre IV peut, à la place ou en sus de l'amende, interdire à l'auteur d'une infraction la réutilisation d'informations publiques pendant une durée maximale de deux ans. Cette durée peut être portée à cinq ans en cas de récidive dans les cinq ans suivant le premier manquement.
+              <br>
+              La commission peut également ordonner la publication de la sanction aux frais de celui qui en est l'objet selon des modalités fixées par décret en Conseil d'Etat.
+              <br>
+              Les amendes sont recouvrées comme les créances de l'Etat étrangères à l'impôt et au domaine.
+            </p>
+            <h3>Dispositions légales - Propriété</h3>
+            <p>
+              Le fait d'accéder au site ne donne pas le droit de l'utiliser sans l'accord de RNF : tous les droits de reproduction sont réservés en vertu de l'article L.122-4
+              du code de la Propriété intellectuelle.<br>
+              Toute utilisation des ressources (photographiques, iconographiques, textuelles ou relatives à la forme, la mise en page,
+              la structure, les logotypes et les documents téléchargeables...) présentes sur ce site doit faire l'objet d'une autorisation express de RNF.<br>
+              À titre principal, RNF concède une autorisation de visualisation du contenu du site.
+            </p>
+            <p>
+              <b>Responsabilité</b>
+            </p>
+            <p>
+              RNF s'efforce de maximiser l'exactitude des informations mais ne peut la garantir ni en établir l'exhaustivité.
+              RNF décline donc toute responsabilité en cas d'erreur ou d'omission.<br>
+              RNF se réserve le droit de modifier, tout ou partie des informations contenues dans les pages de ce site Internet,
+              à tout moment et sans notification préalable.<br>
+              Il appartient à l'utilisateur de ce site de prendre toutes les mesures appropriées de façon
+              à protéger ses propres données et/ou logiciels de la contamination par d'éventuels virus circulant sur le réseau Internet.
+              De manière générale, RNF décline toute responsabilité à un éventuel dommage survenu pendant la consultation du présent site.<br>
+            </p>
+            <p>
+              <b>Lois de référence</b>
+            </p>
+            <p>
+              Loi 78-17 du 6 janvier 1978 Loi relative à l'informatique, aux fichiers et aux libertés<br>
+              Loi du 29 juillet 1881 Loi sur la liberté de la presse
+            </p>
+          </div>
+      </div>
+  </div>
+</div>
+
+</footer>
+
+</html>

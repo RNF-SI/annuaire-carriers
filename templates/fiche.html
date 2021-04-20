@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center" style="margin: 25px;">
+      <div class="col col-md-3" style="text-align:center;">
+        {% if personne.reseau == 'RNF' %}
+          <img src="{{ url_for('static', filename='img/logo_rnf_vert.png')}}" alt="logo rnf" width="100%">
+        {% elif personne.reseau == 'UNPG' %}
+          <img src="{{ url_for('static', filename='img/logo_unpg.png')}}" alt="logo UNPG" width="100%">
+        {% elif personne.reseau == 'MI-F' %}
+          <img src="{{ url_for('static', filename='img/logo_mif.png')}}" alt="logo MI-F" width="60%">
+        {% elif personne.reseau == 'SFIC' %}
+          <img src="{{ url_for('static', filename='img/logo_sfic.png')}}" alt="logo SFIC" width="100%">
+        {% endif %}
+      </div>
+      <div class="col col-md-6">
+        <div class="row justify-content-center">
+          <div class="nom-fiche" style="font-weight: bold;">{{ personne.prenom }} {{ personne.nom }} </div>
+          <h2>{{ personne.fonction }} - {{ personne.structure }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center listes-fiche">
+      <div class="col-sm-10">
+        <div class="row align-items-center justify-content-center" style="background: #007fb6ff; padding: 5px;border-radius: 25px; margin:5px; font-weight: bold; color:white;">
+        <div class="col-sm-12 align-items-center justify-content-center">
+        <div class="row align-items-center justify-content-center">
+          <div style="margin: 25px;">
+            <i class="fas fa-at"></i>  {{personne.email}}
+          </div>
+          <div style="margin: 25px;">
+            <i class="fas fa-phone"></i>  {{personne.telephone_fixe}}
+          </div>
+          <div style="margin: 25px;">
+            <i class="fas fa-mobile-alt"></i>  {{personne.telephone_port}}
+          </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+          <div style="margin-bottom: 25px;">
+            <i class="fas fa-map-marked"></i>  {{personne.adresse}} {{personne.code_postal}} {{personne.commune}}     ({{personne.departement}} - {{personne.region}})
+          </div>
+        </div>
+              </div>
+      </div>
+
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center listes-fiche">
+      <div class="col-sm-5">
+        <div class="row" style="background: #f7af4bff; padding: 5px;border-radius: 25px; margin:5px">
+          <div class="col-sm-4 d-flex align-items-center justify-content-center" style="color:white;">
+            <i class="fas fa-medal fa-6x"></i>
+          </div>
+          <div class="col-sm-8">
+            <h4 style="font-weight : bold">Expertises</h4>
+            <p>{% for i in expertises %}
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check-square"></i></span>{{i.nom}}</li>
+            </ul>
+            {% endfor %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="row" style="background: #76b857ff; padding: 5px;border-radius: 25px;margin: 5px">
+          <div class="col-sm-4 d-flex align-items-center justify-content-center" style="color:white;">
+            <i class="fas fa-map-marked fa-6x"></i>
+          </div>
+          <div class="col-sm-8">
+            <h4 style="font-weight : bold;">Sites</h4>
+            <p>{% for i in sites %}
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check-square" style="vertical-align: middle;"></i></span>{{i.nom}} ({{i.type_site}}) : {{i.adresse}}</li>
+            </ul>
+            {% endfor %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
