@@ -19,7 +19,9 @@
     <h2 style="color: orange;">Ajouter un nouveau contact</h2>
     <p>Entrez les coordonnées professionnelles de ce contact</p>
     <div class="text-center alerte-remplissage">
-      <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations demandées. <br>Aucune modification n'est possible ensuite sans passer par l'administrateur.
+      <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations demandées.
+      <br>Aucune modification n'est possible ensuite sans passer par l'administrateur.
+      <br>Les champs marqués d'un astérisque (<span style="color:red;">*</span>) sont obligatoires.
     </div>
     <hr>
     <form action="{{ url_for('ajout') }}" , method="POST">
@@ -29,13 +31,13 @@
           <div class="row">
         <div class="col col-md-6">
           <div class="form-group">
-            <label for="nom">Nom</label>
+            <label for="nom">Nom <span style="color:red;">*</span></label>
             <input type="text" class="form-control" name="nom" placeholder="Nom" autocomplete=family-name required>
           </div>
         </div>
         <div class="col col-md-6">
           <div class="form-group">
-            <label for="prenom">Prénom</label>
+            <label for="prenom">Prénom <span style="color:red;">*</span></label>
             <input type="text" class="form-control" name="prenom" placeholder="Prénom" autocomplete=given-name required>
           </div>
         </div>
@@ -43,7 +45,7 @@
         <div class="row">
         <div class="col col-md-12">
           <div class="form-group">
-            <label for="structure">Structure</label>
+            <label for="structure">Structure <span style="color:red;">*</span></label>
             <input type="text" class="form-control" name="structure" placeholder="Structure" autocomplete=organization required>
           </div>
         </div>
@@ -51,13 +53,13 @@
       <div class="row">
       <div class="col col-md-6">
         <div class="form-group">
-          <label for="fonction">Fonction</label>
+          <label for="fonction">Fonction <span style="color:red;">*</span></label>
           <input type="text" class="form-control" name="fonction" placeholder="Fonction" autocomplete=organization-title required>
         </div>
       </div>
       <div class="col col-md-6">
         <div class="form-group">
-          <label for="reseau">Réseau</label>
+          <label for="reseau">Réseau <span style="color:red;">*</span></label>
           <select class="custom-select" name="reseau" required>
             <option selected disabled>Choisissez un réseau</option>
             <option>RNF</option>
@@ -257,13 +259,13 @@
           <div class="row">
             <div class="col col-md-6">
               <div class="form-group">
-                <label for="lat">Latitude</label>
+                <label for="lat">Latitude <span style="color:red;">*</span></label>
                 <input type="text" class="form-control readonly" id="lat" name="lat" placeholder="Cliquez sur la carte" required>
               </div>
             </div>
             <div class="col col-md-6">
               <div class="form-group">
-                <label for="long">Longitude</label>
+                <label for="long">Longitude <span style="color:red;">*</span></label>
                 <input type="text" class="form-control readonly" id="long" name="long" placeholder="Cliquez sur la carte" required>
               </div>
             </div>
@@ -278,7 +280,7 @@
       <div class="row">
         <div class="col col-md-4">
           <div class="form-group">
-            <label for="email">E-mail</label>
+            <label for="email">E-mail <span style="color:red;">*</span></label>
             <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email required>
           </div>
         </div>

@@ -26,20 +26,26 @@
         <div class="col-sm-12 align-items-center justify-content-center">
         <div class="row align-items-center justify-content-center">
           <div style="margin: 25px;">
-            <i class="fas fa-at"></i>  {{personne.email}}
+            <i class="fas fa-at"></i>  <a href="mailto:{{personne.email}}">{{personne.email}}</a>
           </div>
+          {% if personne.telephone_fixe %}
           <div style="margin: 25px;">
             <i class="fas fa-phone"></i>  {{personne.telephone_fixe}}
           </div>
+          {% endif %}
+          {% if personne.telephone_port %}
           <div style="margin: 25px;">
             <i class="fas fa-mobile-alt"></i>  {{personne.telephone_port}}
           </div>
+          {% endif %}
         </div>
+        {% if personne.adresse or personne.code_postal or personne.commune or personne.departement %}
         <div class="row align-items-center justify-content-center">
           <div style="margin-bottom: 25px;">
-            <i class="fas fa-map-marked"></i>  {{personne.adresse}} {{personne.code_postal}} {{personne.commune}}     ({{personne.departement}} - {{personne.region}})
+            <i class="fas fa-map-marked"></i>  {% if personne.adresse %}{{personne.adresse}}{% endif %} {% if personne.code_postal %}{{personne.code_postal}}{% endif %} {% if personne.commune %}{{personne.commune}}{% endif %}     {% if personne.departement or personne.region %}({% if personne.departement %}{{personne.departement}}{% endif %} - {% if personne.region %}{{personne.region}}{% endif %}){% endif %}
           </div>
         </div>
+        {% endif %}
               </div>
       </div>
 

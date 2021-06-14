@@ -130,3 +130,7 @@
   background-color: rgba(193,66,66,0.6);
   border-radius: 5px;
 }
+
+.listes-fiche a {
+  color : white;
+}
