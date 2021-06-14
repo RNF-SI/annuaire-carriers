@@ -18,6 +18,9 @@
 
     <h2 style="color: orange;">Ajouter un nouveau contact</h2>
     <p>Entrez les coordonnées professionnelles de ce contact</p>
+    <div class="text-center alerte-remplissage">
+      <b>ATTENTION</b> : Veillez à remplir correctement, et de façon complète, l'ensemble des informations demandées. <br>Aucune modification n'est possible ensuite sans passer par l'administrateur.
+    </div>
     <hr>
     <form action="{{ url_for('ajout') }}" , method="POST">
 
@@ -276,7 +279,7 @@
         <div class="col col-md-4">
           <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email>
+            <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email required>
           </div>
         </div>
         <div class="col col-md-4">

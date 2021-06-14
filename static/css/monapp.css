@@ -125,3 +125,8 @@
   font-size: 2vw;
   display: inline;
 }
+
+.alerte-remplissage {
+  background-color: rgba(193,66,66,0.6);
+  border-radius: 5px;
+}
