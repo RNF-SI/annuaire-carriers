@@ -125,6 +125,8 @@
             </select>
           </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col col-md-6">
           <div class="form-group">
             <label for="departement">Département</label>
@@ -245,7 +247,7 @@
             <div class="col col-md-4">
               <div class="form-group">
                 <label for="code_postal">Code Postal</label>
-                <input type="text" class="form-control" name="code_postal" placeholder="Code Postal" maxlength="5" autocomplete=postal-code>
+                <input type="text" class="form-control" name="code_postal" placeholder="Code Postal" maxlength="5" autocomplete=postal-code onkeydown="if(event.keyCode==32) return false;">
               </div>
             </div>
             <div class="col col-md-8">
@@ -281,19 +283,19 @@
         <div class="col col-md-4">
           <div class="form-group">
             <label for="email">E-mail <span style="color:red;">*</span></label>
-            <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email required>
+            <input type="email" class="form-control" name="email" placeholder="E-mail" autocomplete=email required onkeydown="if(event.keyCode==32) return false;">
           </div>
         </div>
         <div class="col col-md-4">
           <div class="form-group">
             <label for="telephone_fixe">Téléphone fixe</label>
-            <input type="text" class="form-control" name="telephone_fixe" placeholder="Téléphone fixe" maxlength="10" autocomplete=tel-national>
+            <input type="text" class="form-control" name="telephone_fixe" placeholder="Téléphone fixe" maxlength="10" autocomplete=tel-national onkeydown="if(event.keyCode==32) return false;">
           </div>
         </div>
         <div class="col col-md-4">
           <div class="form-group">
             <label for="telephone_port">Téléphone portable</label>
-            <input type="text" class="form-control" name="telephone_port" placeholder="Téléphone portable" maxlength="10" autocomplete=tel-national>
+            <input type="text" class="form-control" name="telephone_port" placeholder="Téléphone portable" maxlength="10" autocomplete=tel-national onkeydown="if(event.keyCode==32) return false;">
           </div>
         </div>
       </div>

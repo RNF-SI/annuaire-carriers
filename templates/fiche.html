@@ -42,7 +42,7 @@
         {% if personne.adresse or personne.code_postal or personne.commune or personne.departement %}
         <div class="row align-items-center justify-content-center">
           <div style="margin-bottom: 25px;">
-            <i class="fas fa-map-marked"></i>  {% if personne.adresse %}{{personne.adresse}}{% endif %} {% if personne.code_postal %}{{personne.code_postal}}{% endif %} {% if personne.commune %}{{personne.commune}}{% endif %}     {% if personne.departement or personne.region %}({% if personne.departement %}{{personne.departement}}{% endif %} - {% if personne.region %}{{personne.region}}{% endif %}){% endif %}
+            <i class="fas fa-map-marked"></i>  {% if personne.adresse %}{{personne.adresse}}{% endif %} {% if personne.code_postal %}{{personne.code_postal}}{% endif %} {% if personne.commune %}{{personne.commune}}{% endif %}     {% if personne.departement or personne.region %}({% if personne.departement %}{{personne.departement}}{% endif %}{% if personne.departement and personne.region %} - {% endif %}{% if personne.region %}{{personne.region}}{% endif %}){% endif %}
           </div>
         </div>
         {% endif %}
@@ -76,7 +76,7 @@
             <h4 style="font-weight : bold;">Sites</h4>
             <p>{% for i in sites %}
             <ul class="fa-ul">
-              <li><span class="fa-li"><i class="fas fa-check-square" style="vertical-align: middle;"></i></span>{{i.nom}} ({{i.type_site}}) : {{i.adresse}}</li>
+              <li><span class="fa-li"><i class="fas fa-check-square" style="vertical-align: middle;"></i></span>{{i.nom}} ({{i.type_site}}) {% if i.adresse %}: {{i.adresse}}{% endif %}</li>
             </ul>
             {% endfor %}</p>
           </div>

@@ -127,8 +127,8 @@ def ajout():
             if expertise != '' :
                 expertise = Expertise(nom=expertise, annuaire_id=personne.id)
                 db.session.add(expertise)
-        msg = Message("Ajout d'un contact à l'annuaire partagé de géologie", sender = 'zacharie.moulin-rnf@espaces-naturels.fr',
-                recipients = ['zacharie.moulin@gmail.com'],
+        msg = Message("Ajout d'un contact à l'annuaire partagé de géologie", sender = 'si-rnf@espaces-naturels.fr',
+                recipients = ['si-rnf@espaces-naturels.fr'],
                 body= "Le contact %s a été ajouté à l'annuaire." % prenom
         )
         mail.send(msg)
