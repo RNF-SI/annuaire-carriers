@@ -118,9 +118,9 @@ def ajout():
         type_sites = request.form.getlist('type_site[]')
         adresse_sites = request.form.getlist('adresse_site[]')
         sites = list(zip(nom_sites, type_sites, adresse_sites))
-        for (nom, type, adresse) in sites :
-            if nom != '' :
-                site = Site(nom=nom, type_site=type, adresse=adresse, annuaire_id=personne.id)
+        for (nom_site, type_site, adresse_site) in sites :
+            if nom_site != '' :
+                site = Site(nom=nom_site, type_site=type_site, adresse=adresse_site, annuaire_id=personne.id)
                 db.session.add(site)
         expertises = request.form.getlist('expertise[]' or None)
         for expertise in expertises :
