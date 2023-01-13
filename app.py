@@ -76,8 +76,8 @@ def contact():
         subject = "Message de %s sur l'annuaire de géologie" % (request.form.get('nom'))
         body = "<p><b>Nom :</b> %s<br><b>Sujet :</b> %s<br><b>Mail :</b> %s</p><p><b>Contenu :</b> %s</p>" % (request.form.get('nom'), request.form.get('sujet'), request.form.get('email'),request.form.get('message'))
         msg = Message(subject = subject,
-                sender = request.form.get('email'),
-                recipients = ['zacharie.moulin-rnf@espaces-naturels.fr'],
+                sender = 'si@rnfrance.org',
+                recipients = ['si@rnfrance.org'],
                 html = body
         )
         mail.send(msg)
@@ -127,8 +127,8 @@ def ajout():
             if expertise != '' :
                 expertise = Expertise(nom=expertise, annuaire_id=personne.id)
                 db.session.add(expertise)
-        msg = Message("Ajout d'un contact à l'annuaire partagé de géologie", sender = 'si-rnf@espaces-naturels.fr',
-                recipients = ['si-rnf@espaces-naturels.fr'],
+        msg = Message("Ajout d'un contact à l'annuaire partagé de géologie", sender = 'si@rnfrance.org',
+                recipients = ['si@rnfrance.org'],
                 body= "Le contact %s a été ajouté à l'annuaire." % prenom
         )
         mail.send(msg)
