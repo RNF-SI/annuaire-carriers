@@ -3,10 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mail import Mail, Message
 from config import Config
+from flask_matomo import *
 
 app = Flask(__name__)
 app.config.from_object(Config)
 mail = Mail()
+
+matomo = Matomo(app, matomo_url="https://matomo.reserves-naturelles.org",
+                id_site=1, token_auth=Config.TOKEN_MATOMO)
 
 db = SQLAlchemy(app)
 
