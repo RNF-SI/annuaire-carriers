@@ -13,7 +13,7 @@
 <br>
 <div class="container">
   <div class="">
-    <p style="text-align:justify;">Depuis 2019, l’UNPG, MI-F, le SFIC et RNF sont engagés dans un partenariat construit autour des liens qui unissent l’univers des carrières, en activité ou après exploitation, et le patrimoine naturel. Plus particulièrement, les carrières présentent un intérêt évident pour les géologues, qui y trouvent de magnifiques affleurements frais et un grand nombre de sites du patrimoine géologique français sont associés à des fronts de taille.
+    <p style="text-align:justify;">Depuis 2019, l’UNPG, MI-F, France Ciment et RNF sont engagés dans un partenariat construit autour des liens qui unissent l’univers des carrières, en activité ou après exploitation, et le patrimoine naturel. Plus particulièrement, les carrières présentent un intérêt évident pour les géologues, qui y trouvent de magnifiques affleurements frais et un grand nombre de sites du patrimoine géologique français sont associés à des fronts de taille.
 <br><br>C’est dans ce contexte que les 4 réseaux partenaires ont souhaité mettre en place un annuaire commun dans lequel leurs membres pourront rechercher ponctuellement des interlocuteurs autour d’eux en cas de besoin. </p>
   </div>
   <br>
@@ -26,7 +26,7 @@
       <img src="{{ url_for('static', filename='img/logo_mif.png')}}" alt="">
     </div>
     <div class="">
-      <img src="{{ url_for('static', filename='img/logo_sfic.png')}}" alt="">
+      <img src="{{ url_for('static', filename='img/logo_france_ciment.png')}}" alt="">
     </div>
     <div class="">
       <img src="{{ url_for('static', filename='img/logo_rnf_vert.png')}}" alt="">
@@ -70,8 +70,8 @@
     popupAnchor: [1, -11]
   });
 
-  var sficIcon = new L.Icon({
-    iconUrl: "{{ url_for('static', filename='img/embleme_sfic.png')}}",
+  var francecimentIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_france_ciment.png')}}",
     iconSize: [20, 18],
     iconAnchor: [10, 11],
     popupAnchor: [1, -11]
@@ -109,9 +109,9 @@
   {% endfor %}
   ];
 
-  var sfic = [
+  var franceciment = [
   {% for contact in contacts %}
-  {% if contact.reseau == "SFIC" %}
+  {% if contact.reseau == "France Ciment" %}
   {
     "LNG": "{{ contact.long }}",
     "LAT": "{{ contact.lat }}",
@@ -144,7 +144,7 @@
   var rnfLayer = L.layerGroup([]);
   var mifLayer = L.layerGroup([]);
   var unpgLayer = L.layerGroup([]);
-  var sficLayer = L.layerGroup([]);
+  var francecimentLayer = L.layerGroup([]);
 
 
   function makePointLayer(point, icon, layer){
@@ -156,12 +156,12 @@
   rnf.forEach(element => { makePointLayer(element, rnfIcon, rnfLayer)})
   mif.forEach(element => { makePointLayer(element, mifIcon, mifLayer)})
   unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
-  sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+  franceciment.forEach(element => { makePointLayer(element, francecimentIcon, francecimentLayer)})
 
   rnfLayer.addTo(map);
   mifLayer.addTo(map);
   unpgLayer.addTo(map);
-  sficLayer.addTo(map);
+  francecimentLayer.addTo(map);
 
 </script>
 

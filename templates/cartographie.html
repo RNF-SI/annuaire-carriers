@@ -12,8 +12,8 @@
       <label class="custom-control-label" for="mifSwitch">MI-F</label>
     </div>
     <div class="custom-control custom-switch">
-      <input type="checkbox" class="custom-control-input" id="sficSwitch" onchange="toggleSFIC(this)" checked>
-      <label class="custom-control-label" for="sficSwitch">SFIC</label>
+      <input type="checkbox" class="custom-control-input" id="francecimentSwitch" onchange="toggleFranceCiment(this)" checked>
+      <label class="custom-control-label" for="francecimentSwitch">France Ciment</label>
     </div>
     <div class="custom-control custom-switch">
       <input type="checkbox" class="custom-control-input" id="rnfSwitch" onchange="toggleRNF(this)" checked>
@@ -55,8 +55,8 @@
     popupAnchor: [1, -11]
   });
 
-  var sficIcon = new L.Icon({
-    iconUrl: "{{ url_for('static', filename='img/embleme_sfic.png')}}",
+  var francecimentIcon = new L.Icon({
+    iconUrl: "{{ url_for('static', filename='img/embleme_france_ciment.png')}}",
     iconSize: [20, 18],
     iconAnchor: [10, 11],
     popupAnchor: [1, -11]
@@ -94,9 +94,9 @@
   {% endfor %}
   ];
 
-  var sfic = [
+  var franceciment = [
   {% for contact in contacts %}
-  {% if contact.reseau == "SFIC" %}
+  {% if contact.reseau == "France Ciment" %}
   {
     "LNG": "{{ contact.long }}",
     "LAT": "{{ contact.lat }}",
@@ -129,7 +129,7 @@
   var rnfLayer = L.layerGroup([]);
   var mifLayer = L.layerGroup([]);
   var unpgLayer = L.layerGroup([]);
-  var sficLayer = L.layerGroup([]);
+  var francecimentLayer = L.layerGroup([]);
 
 
   function makePointLayer(point, icon, layer){
@@ -141,12 +141,12 @@
   rnf.forEach(element => { makePointLayer(element, rnfIcon, rnfLayer)})
   mif.forEach(element => { makePointLayer(element, mifIcon, mifLayer)})
   unpg.forEach(element => { makePointLayer(element, unpgIcon, unpgLayer)})
-  sfic.forEach(element => { makePointLayer(element, sficIcon, sficLayer)})
+  franceciment.forEach(element => { makePointLayer(element, francecimentIcon, francecimentLayer)})
 
   rnfLayer.addTo(map);
   mifLayer.addTo(map);
   unpgLayer.addTo(map);
-  sficLayer.addTo(map);
+  francecimentLayer.addTo(map);
 
   function toggleUNPG (e) {
     if (e.checked) {
@@ -164,11 +164,11 @@
     }
   }
 
-  function toggleSFIC (e) {
+  function toggleFranceCiment (e) {
     if (e.checked) {
-      map.addLayer(sficLayer);
+      map.addLayer(francecimentLayer);
     } else {
-      map.removeLayer(sficLayer);
+      map.removeLayer(francecimentLayer);
     }
   }
 
